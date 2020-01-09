@@ -19,6 +19,8 @@ package io.grpc.examples.helloworld;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.xds.XdsNameResolverProvider;
+
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,5 +84,21 @@ public class HelloWorldClient {
     } finally {
       client.shutdown();
     }
+
+    final ManagedChannel managedChannel = ManagedChannelBuilder
+            .forTarget("xds-experimental://xds/hello-world-server")
+            .nameResolverFactory(new XdsNameResolverProvider())
+            .usePlaintext()
+            .build();
+    GreeterGrpc.GreeterBlockingStub stub = GreeterGrpc.newBlockingStub(managedChannel);
+
+    HelloReply response;
+    try {
+      response = stub.sayHello(HelloRequest.newBuilder().setName("grpc-java xds LB!").build());
+    } catch (StatusRuntimeException e) {
+      logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+      return;
+    }
+    logger.log(Level.INFO, "Reply: {0}", response);
   }
 }

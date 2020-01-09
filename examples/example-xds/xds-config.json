@@ -1,0 +1,11 @@
+{
+    "node": {
+        "id": "hello-world-client-id",
+        "cluster": "hello-world-server"
+    },
+    "xds_servers": [
+        {
+            "server_uri": "127.0.0.1:18000"
+        }
+    ]
+}

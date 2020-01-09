@@ -501,7 +501,7 @@ abstract class XdsClient {
           }
         }
         if (ch == null) {
-          ch = ManagedChannelBuilder.forTarget(serverUri).build();
+          ch = ManagedChannelBuilder.forTarget(serverUri).usePlaintext().build();
         }
         return ch;
       }

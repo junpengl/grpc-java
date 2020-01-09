@@ -110,6 +110,7 @@ $ ./build/install/examples/bin/hello-world-server
 And in a different terminal window run:
 
 ```
+$ export GRPC_XDS_BOOTSTRAP=example-xds/xds-config.json
 $ ./build/install/examples/bin/hello-world-client
 ```
 
